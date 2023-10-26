@@ -91,14 +91,17 @@ stream = pa.open(format=FORMAT,
 
 
 def detect_voice():
+    global block
     error_count = 0
     voice_detected = False
 
     try:
         block = stream.read(INPUT_FRAMES_PER_BLOCK, exception_on_overflow=False)
-    except (IOError, e):
-        error_count += 1
-        print("(%d) Error recording: %s" % (error_count, e))
+    except():
+        return
+    # except (IOError, e):
+    #     error_count += 1
+    #     print("(%d) Error recording: %s" % (error_count, e))
 
     amplitude = get_rms(block)
     if amplitude > AMPLITUDE_THRESHOLD:
